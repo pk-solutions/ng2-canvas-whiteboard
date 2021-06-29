@@ -1,7 +1,7 @@
 {
-  "name": "ng2-canvas-whiteboard",
-  "version": "4.0.2",
-  "author": "webfactory",
+  "name": "@pk-solutions/ng2-canvas-whiteboard",
+  "version": "4.0.3",
+  "author": "PK Solutions",
   "license": "MIT",
   "description": "A Canvas component for Angular which supports free drawing.",
   "keywords": [
@@ -29,7 +29,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/WebFactoryMk/ng2-canvas-whiteboard.git"
+    "url": "git+https://github.com/pk-solutions/ng2-canvas-whiteboard.git"
   },
   "peerDependencies": {
     "@angular/common": "^10.0.6",
@@ -39,5 +39,10 @@
   "dependencies": {
     "lodash-es": "4.17.15",
     "tslib": "^2.0.0"
-  }
+  },
+  "devDependencies": {},
+  "bugs": {
+      "url": "https://github.com/pk-solutions/ng2-canvas-whiteboard/issues"
+    },
+  "homepage": "https://github.com/pk-solutions/ng2-canvas-whiteboard#readme"
 }
