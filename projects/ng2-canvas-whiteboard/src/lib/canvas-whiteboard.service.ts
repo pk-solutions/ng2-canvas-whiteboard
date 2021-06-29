@@ -24,8 +24,8 @@ export class CanvasWhiteboardService {
     this._canvasClearSubject.next();
   }
 
-  public undoCanvas(updateUUD: string): void {
-    this._canvasUndoSubject.next(updateUUD);
+  public undoCanvas(updateUUD: string, disallowUndo: boolean): void {
+    this._canvasUndoSubject.next({ updateUUD, disallowUndo });
   }
 
   public redoCanvas(updateUUD: string): void {

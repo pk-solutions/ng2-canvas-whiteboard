@@ -375,7 +375,7 @@ export class CanvasWhiteboardComponent implements OnInit, AfterViewInit, OnChang
     this._canvasWhiteboardServiceSubscriptions.push(this.canvasWhiteboardService.canvasClearSubject$
       .subscribe(() => this.clearCanvas()));
     this._canvasWhiteboardServiceSubscriptions.push(this.canvasWhiteboardService.canvasUndoSubject$
-      .subscribe((updateUUD) => this._undoCanvas(updateUUD)));
+      .subscribe((e) => this._undoCanvas(e.updateUUD, e.disallowUndo)));
     this._canvasWhiteboardServiceSubscriptions.push(this.canvasWhiteboardService.canvasRedoSubject$
       .subscribe((updateUUD) => this._redoCanvas(updateUUD)));
 
@@ -449,7 +449,7 @@ export class CanvasWhiteboardComponent implements OnInit, AfterViewInit, OnChang
    * @param callbackFn
    * @param isForRedraw If true, won't clear undo history from _undoStack
    */
-  _removeCanvasData(callbackFn, isForRedraw): void {
+  _removeCanvasData(callbackFn?: Function, isForRedraw: boolean = false): void {
     const prevShapesMap = new Map(this._shapesMap);
     this._shapesMap = new Map<string, CanvasWhiteboardShape>();
     this._clientDragging = false;
@@ -594,11 +594,16 @@ export class CanvasWhiteboardComponent implements OnInit, AfterViewInit, OnChang
   /**
    * This method takes an UUID for an update, and redraws the canvas by making all updates with that uuid invisible
    * @param updateUUID
+   * @param disallowUndo
    */
-  private _undoCanvas(updateUUID: string): void {
+  private _undoCanvas(updateUUID: string, disallowUndo: boolean = false): void {
     if (this._shapesMap.has(updateUUID)) {
       const shape = this._shapesMap.get(updateUUID);
-      shape.isVisible = false;
+      shape.isVisible = false; 
+      if (disallowUndo) {
+        this._undoStack = this._undoStack.filter(x => x !== updateUUID);
+        this._redoStack = this._redoStack.filter(x => x !== updateUUID);
+      }
       this.drawAllShapes();
     }
   }
@@ -827,7 +832,7 @@ export class CanvasWhiteboardComponent implements OnInit, AfterViewInit, OnChang
    * @param update The update object.
    * @param prevShape The shape that this update was part of before. Used for redrawing
    */
-  private _draw(update: CanvasWhiteboardUpdate, prevShape: CanvasWhiteboardShape): void {
+  private _draw(update: CanvasWhiteboardUpdate, prevShape?: CanvasWhiteboardShape): void {
     this._updateHistory.push(update);
 
     // map the canvas coordinates to our canvas size since they are scaled.
