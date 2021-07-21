@@ -178,6 +178,8 @@ export class CanvasWhiteboardComponent implements OnInit, AfterViewInit, OnChang
   selectedShapeConstructor: INewCanvasWhiteboardShape<CanvasWhiteboardShape>;
   canvasWhiteboardShapePreviewOptions: CanvasWhiteboardShapeOptions;
 
+  mirrorXAxis: boolean;
+
   constructor(private ngZone: NgZone,
               private changeDetectorRef: ChangeDetectorRef,
               private canvasWhiteboardService: CanvasWhiteboardService,
@@ -696,7 +698,7 @@ export class CanvasWhiteboardComponent implements OnInit, AfterViewInit, OnChang
     let update: CanvasWhiteboardUpdate;
     let updateType: number;
     const eventPosition: CanvasWhiteboardPoint = this._getCanvasEventPosition(event);
-    update = new CanvasWhiteboardUpdate(eventPosition.x, eventPosition.y);
+    update = new CanvasWhiteboardUpdate(this.mirrorXAxis ? 1 - eventPosition.x : eventPosition.x, eventPosition.y);
 
     switch (event.type) {
       case 'mousedown':
